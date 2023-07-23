@@ -1,0 +1,15 @@
+<h1>Independent counter</h1>
+
+<p>
+  <strong data-test-id="count">{{ count }}</strong>
+</p>
+
+<p>
+  <button (click)="increment()" data-test-id="increment-button">+</button>
+  <button (click)="decrement()" data-test-id="decrement-button">-</button>
+</p>
+
+<p>
+  <input type="number" #resetInput data-testid="reset-input" />
+  <button (click)="reset(resetInput.value)" data-test-id="reset-button">Reset</button>
+</p>

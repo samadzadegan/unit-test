@@ -7,13 +7,15 @@ import { HttpClientModule } from "@angular/common/http";
 import { UserComponent } from './components/user/user.component';
 import { StrengthPipe } from './pipes/Strength/strength.pipe';
 import { PostsComponent } from './components/posts/posts.component';
+import { CounterComponent } from './components/counter/counter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
     StrengthPipe,
-    PostsComponent
+    PostsComponent,
+    CounterComponent
   ],
   imports: [
     BrowserModule,

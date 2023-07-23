@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { CalculatorService } from "./calculator.service";
-import { LoggerService } from "../logger/logger.service";
-
+import { CalculatorService } from './calculator.service';
+import { LoggerService } from '../logger/logger.service';
 
 describe('CalculatorService', () => {
   let service: CalculatorService;
@@ -13,9 +12,9 @@ describe('CalculatorService', () => {
       providers: [
         {
           provide: LoggerService,
-          useValue: mockLoggerService
-        }
-      ]
+          useValue: mockLoggerService,
+        },
+      ],
     });
     service = TestBed.inject(CalculatorService);
   });
