@@ -1,13 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CounterComponent } from './counter.component';
-import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import {
+  click,
+  expectText,
+  setFieldValue,
+} from '../../spec-helpers/element.spec-helper';
+import { take, toArray } from 'rxjs/operators';
 
 describe('CounterComponent', () => {
   let component: CounterComponent;
   let fixture: ComponentFixture<CounterComponent>;
   let debugElement: DebugElement;
+  const startCount = 0;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,37 +31,110 @@ describe('CounterComponent', () => {
     // console.log(nativeElement.innerHTML);
     // *********************************************************************
     component = fixture.componentInstance;
+    component.startCount = startCount;
+    component.ngOnChanges();
     fixture.detectChanges();
     debugElement = fixture.debugElement;
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  it('shows the start count', () => {
+    expectText(fixture, 'count', String(startCount));
+  });
+
+  // it('emits countChange events on increment', () => {
+  //   let actualCount: number | undefined;
+  //   component.countChange.subscribe((count: number) => {
+  //     actualCount = count;
+  //   });
+  //
+  //   click(fixture, 'increment-button');
+  //
+  //   expect(actualCount).toBe(1);
+  // });
+  //
+  // it('emits countChange events on decrement', () => {
+  //   let actualCount: number | undefined;
+  //   component.countChange.subscribe((count: number) => {
+  //     actualCount = count;
+  //   });
+  //
+  //   click(fixture, 'decrement-button');
+  //
+  //   expect(actualCount).toBe(-1);
+  // });
+  //
+  // it('emits countChange events on reset', () => {
+  //   const newCount = '777';
+  //   let actualCount: number | undefined;
+  //   component.countChange.subscribe((count: number) => {
+  //     actualCount = count;
+  //   });
+  //
+  //   setFieldValue(fixture, 'reset-input', newCount);
+  //   click(fixture, 'reset-button');
+  //
+  //   expect(actualCount).toBe(+newCount);
+  // });
+
+  // *********************************** Combine all tree specs of countChange events ***********************************
+  it('emits countChange events', () => {
+    const newCount = '777';
+    let actualCount: number[] | undefined;
+    component.countChange
+      .pipe(take(3), toArray())
+      .subscribe((count: number[]) => {
+        actualCount = count;
+      });
+
+    click(fixture, 'increment-button');
+    click(fixture, 'decrement-button');
+    setFieldValue(fixture, 'reset-input', newCount);
+    click(fixture, 'reset-button');
+
+    expect(actualCount).toEqual([1, 0, +newCount]);
+  });
+
   it('increments the count', () => {
-    const incrementButton = debugElement.query(
-      By.css('[data-test-id="increment-button"]')
-    );
-    incrementButton.triggerEventHandler('click', null);
-
+    // ACT
+    click(fixture, 'increment-button');
+    // RE-RENDER
     fixture.detectChanges();
-
-    const countOutput = debugElement.query(By.css('[data-test-id="count"]'));
-    expect(countOutput.nativeElement.textContent).toBe('1');
-    // component.increment();
-    // expect(component.count).toBe(1);
+    // ASSERT
+    expectText(fixture, 'count', '1');
   });
 
   it('decrements the count', () => {
-    const decrementButton = debugElement.query(
-      By.css('[data-test-id="decrement-button"]')
-    );
-    decrementButton.triggerEventHandler('click', null);
-
+    // ACT
+    click(fixture, 'decrement-button');
+    // RE-RENDER
     fixture.detectChanges();
+    // ASSERT
+    expectText(fixture, 'count', '-1');
+  });
 
-    const countOutput = debugElement.query(By.css('[data-test-id="count"]'));
-    expect(countOutput.nativeElement.textContent).toBe('-1');
+  it('reset the count', () => {
+    const newCount = '123';
+    // ACT
+    setFieldValue(fixture, 'reset-input', newCount);
+    click(fixture, 'reset-button');
+    // RE-RENDER
+    fixture.detectChanges();
+    // ASSERT
+    expectText(fixture, 'count', newCount);
+  });
+
+  it('does not reset if the value is not a number', () => {
+    const newCount = 'not a number';
+    // ACT
+    setFieldValue(fixture, 'reset-input', newCount);
+    click(fixture, 'reset-button');
+    // RE-RENDER
+    fixture.detectChanges();
+    // ASSERT
+    expectText(fixture, 'count', '0');
   });
 });
