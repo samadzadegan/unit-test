@@ -3,11 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './components/user/user.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { PostsComponent } from './components/posts/posts.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CounterComponent,
+    component: HomeComponent,
   },
   {
     path: 'counter',

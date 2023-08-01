@@ -17,6 +17,23 @@ export function findEl<T>(
 }
 
 /**
+ * Finds a nested Component by its selector, e.g. `app-example`.
+ * Throws an error if no element was found.
+ * Use this only for shallow component testing.
+ * When finding other elements, use `findEl` / `findEls` and `data-testid` attributes.
+ *
+ * @param fixture Component fixture
+ * @param selector Element selector, e.g. `app-example`
+ *
+ */
+export function findComponent<T>(
+  fixture: ComponentFixture<T>,
+  selector: string
+): DebugElement {
+  return fixture.debugElement.query(By.css(selector));
+}
+
+/**
  * Emulates a left click on the element with the given `data-test-id` attribute.
  *
  * @param fixture Component fixture
