@@ -9,6 +9,7 @@ import { StrengthPipe } from './pipes/Strength/strength.pipe';
 import { PostsComponent } from './components/posts/posts.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { HomeComponent } from './components/home/home.component';
+import { ServiceCounterComponent } from './components/service-counter/service-counter.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HomeComponent } from './components/home/home.component';
     StrengthPipe,
     PostsComponent,
     CounterComponent,
-    HomeComponent
+    HomeComponent,
+    ServiceCounterComponent
   ],
   imports: [
     BrowserModule,
